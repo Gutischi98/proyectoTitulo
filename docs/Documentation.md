@@ -113,8 +113,3 @@ Tabla de Validación de Casos de Prueba (CP) implementados:
     El servidor iniciará en `http://localhost:3000`.
 4.  **Acceso Web:**
     Abrir `src/frontend/login.html` en el navegador (o servir con Live Server).
-
-## 9. Usuarios por Defecto
-
-- **Admin:** `admin@tech.com` / `admin123` (Rol 1)
-- **Técnico:** `user@tech.com` / `user123` (Rol 2)
