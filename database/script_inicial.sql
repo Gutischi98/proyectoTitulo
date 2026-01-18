@@ -109,4 +109,6 @@ INSERT INTO tickets (asunto, prioridad, estado, id_usuario_reporta) VALUES
 ALTER TABLE tickets ADD COLUMN id_usuario_asignado INT NULL;
 
 -- FIX para el error de que no se muestren los tickets para mantener integridad referencial
-ALTER TABLE tickets ADD COLUMN id_usuario_asignado INT NULL;
+ALTER TABLE tickets ADD CONSTRAINT 
+fk_tickets_usuario_asignado FOREIGN KEY (id_usuario_asignado) 
+REFERENCES usuarios(id_usuario);
