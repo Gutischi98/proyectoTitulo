@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/api/tickets';
+const API_URL = `${API_BASE_URL}/tickets`;
 
 document.addEventListener('DOMContentLoaded', () => {
     fetchTickets();
@@ -160,7 +160,7 @@ window.openEdit = async (id, estado, prioridad, asignadoId) => {
         
         if (selectAssign.options.length <= 1) {
              try {
-                const res = await fetch('http://localhost:3000/api/users', { headers: getAuthHeaders() });
+                const res = await fetch(`${API_BASE_URL}/users`, { headers: getAuthHeaders() });
                 if (res.ok) {
                     const users = await res.json();
                     selectAssign.innerHTML = '<option value="">-- Sin Asignar --</option>';

@@ -32,7 +32,7 @@ function getAuthHeaders() {
 
 async function fetchDashboardData() {
     try {
-        const res = await fetch('http://localhost:3000/api/dashboard', { headers: getAuthHeaders() });
+        const res = await fetch(`${API_BASE_URL}/dashboard`, { headers: getAuthHeaders() });
         const data = await res.json();
 
         document.getElementById('count-tickets').innerText = data.ticketsPendientes;

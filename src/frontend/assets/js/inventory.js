@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/api/equipos';
+const API_URL = `${API_BASE_URL}/equipos`;
 
 document.addEventListener('DOMContentLoaded', () => {
     fetchEquipos();
@@ -207,7 +207,7 @@ function setupModal() {
             const password = document.getElementById('admin-password').value;
 
             try {
-                const loginRes = await fetch('http://localhost:3000/api/auth/login', {
+                const loginRes = await fetch(`${API_BASE_URL}/auth/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
