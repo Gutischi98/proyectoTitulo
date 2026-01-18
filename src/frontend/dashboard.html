@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Inventario Local</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+  </head>
+  <body>
+    <div class="app-container">
+      <div id="overlay-backdrop" class="overlay-backdrop"></div>
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header"><h2>Inventario Local</h2></div>
+        <nav class="sidebar-nav">
+          <a href="dashboard.html" class="active">Dashboard</a>
+          <a href="inventory.html">Inventario</a>
+          <a href="tickets.html">Tickets</a>
+          <a href="users.html">Usuarios</a>
+        </nav>
+        <div class="sidebar-footer">
+          <p>Bienvenido, <strong id="saludo-usuario">Técnico</strong></p>
+          <a href="#" id="logout-btn" class="logout">Cerrar Sesión</a>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="top-bar">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <button id="menu-toggle" class="menu-toggle">☰</button>
+            <h1>Panel General</h1>
+          </div>
+        </header>
+
+        <section class="content-area">
+          <div class="cards-grid">
+            <div class="card card-warning">
+              <h2 id="count-tickets">0</h2>
+              <p>Tickets Pendientes</p>
+            </div>
+            <div class="card card-success">
+              <h2 id="count-equipos">0</h2>
+              <p>Equipos Activos</p>
+            </div>
+            <div class="card card-info">
+              <h2 id="count-reparacion">0</h2>
+              <p>Equipos en Reparación</p>
+            </div>
+          </div>
+
+          <div class="recent-tickets-section">
+            <h3>Últimos Tickets Recibidos</h3>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Asunto</th>
+                    <th>Prioridad</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody id="tickets-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="assets/js/dashboard.js"></script>
+    <script src="assets/js/sidebar.js"></script>
+  </body>
+</html>

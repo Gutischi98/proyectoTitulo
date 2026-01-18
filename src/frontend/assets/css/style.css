@@ -1,0 +1,352 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+  background-color: #f4f4f9;
+  color: #333;
+  height: 100vh;
+  overflow: hidden;
+}
+.app-container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #2c3e50;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.sidebar-header {
+  padding: 20px;
+  background-color: #243342;
+  border-bottom: 1px solid #34495e;
+}
+
+.sidebar-nav {
+  flex-grow: 1;
+  padding-top: 20px;
+}
+
+.sidebar-nav a {
+  display: block;
+  padding: 15px 25px;
+  color: #bdc3c7;
+  text-decoration: none;
+  transition: 0.3s;
+  border-left: 4px solid transparent;
+}
+
+.sidebar-nav a:hover {
+  background-color: #34495e;
+  color: white;
+}
+
+.sidebar-nav a.active {
+  background-color: #0d6efd;
+  color: white;
+  border-left: 4px solid white;
+}
+
+.sidebar-footer {
+  padding: 20px;
+  background-color: #243342;
+  font-size: 0.9rem;
+}
+
+.sidebar-footer .logout {
+  color: #e74c3c;
+  text-decoration: none;
+  font-size: 0.8rem;
+  display: block;
+  margin-top: 5px;
+}
+
+.main-content {
+  flex-grow: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-bar {
+  background-color: white;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.content-area {
+  padding: 30px 40px;
+}
+
+.btn-primary {
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.btn-primary:hover {
+  background-color: #0b5ed7;
+}
+
+.table-container {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: #f8f9fa;
+  color: #555;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  padding: 15px 20px;
+  text-align: left;
+  border-bottom: 2px solid #eee;
+}
+
+td {
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+  color: #444;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+tr:hover {
+  background-color: #fcfcfc;
+}
+
+.badge {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.badge.operativo {
+  background-color: #d1e7dd;
+  color: #0f5132;
+}
+.badge.en_reparacion {
+  background-color: #fff3cd;
+  color: #664d03;
+}
+.badge.baja {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.btn-block {
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 30px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+}
+.close-btn:hover { color: black; }
+
+.btn-sm {
+    padding: 5px 10px;
+    margin: 0 2px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: transform 0.1s;
+}
+.btn-sm:hover { transform: scale(1.1); }
+
+.edit-btn { background-color: #f1c40f; color: white; }
+.key-btn { background-color: #34495e; color: white; }
+.delete-btn { background-color: #e74c3c; color: white; }
+.delete-btn:hover { background-color: #c0392b; }
+
+
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #333;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+@media (max-width: 768px) {
+    .app-container {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .sidebar {
+        position: fixed;
+        left: -250px;
+        top: 0;
+        bottom: 0;
+        z-index: 1000;
+        transition: 0.3s;
+        height: 100%;
+        box-shadow: 2px 0 5px rgba(0,0,0,0.5);
+    }
+    
+    .sidebar.active {
+        left: 0;
+    }
+
+    .overlay-backdrop {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 900;
+        display: none;
+    }
+    .overlay-backdrop.active {
+        display: block;
+    }
+
+    .top-bar {
+        position: sticky;
+        top: 0;
+        z-index: 800;
+        padding: 15px 20px;
+    }
+
+    .main-content {
+        height: auto;
+        overflow: visible;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    tr {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: white;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    td {
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+        text-align: right;
+    }
+
+    td:before {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: bold;
+        color: #555;
+        content: attr(data-label);
+    }
+
+    td:last-child {
+        border-bottom: none;
+        display: flex;
+        justify-content: flex-end;
+        gap: 5px;
+        padding-left: 15px;
+    }
+    
+    td:last-child:before {
+        display: none;
+    }
+
+    .table-container {
+        background: transparent;
+        box-shadow: none;
+    }
+}

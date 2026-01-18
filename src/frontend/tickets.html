@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Soporte - Inventario Local</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <div id="overlay-backdrop" class="overlay-backdrop"></div>
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header"><h2>Inventario Local</h2></div>
+        <nav class="sidebar-nav">
+          <a href="dashboard.html">Dashboard</a>
+          <a href="inventory.html">Inventario</a>
+          <a href="tickets.html" class="active">Tickets</a>
+          <a href="users.html">Usuarios</a>
+        </nav>
+        <div class="sidebar-footer">
+          <p>Bienvenido, <strong id="saludo-usuario">Técnico</strong></p>
+          <a href="#" id="logout-btn" class="logout">Cerrar Sesión</a>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="top-bar">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <button id="menu-toggle" class="menu-toggle">☰</button>
+            <h1>Mesa de Ayuda</h1>
+           </div>
+          <button id="btn-new-ticket" class="btn-primary">
+            + Nuevo Ticket
+          </button>
+        </header>
+
+        <section class="content-area">
+          <div class="table-container">
+            <table id="tickets-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Asunto</th>
+                  <th>Usuario</th>
+                  <th>Asignado a</th>
+                  <th>Prioridad</th>
+                  <th>Estado</th>
+                  <th>Fecha</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tickets-body"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="modal-ticket" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" data-modal="modal-ticket">&times;</span>
+        <h2>Reportar Incidente</h2>
+        <form id="form-ticket">
+          <div class="form-group">
+            <label>Asunto</label>
+            <input type="text" id="asunto" placeholder="Ej. Falla de conexión VPN" required />
+          </div>
+          <div class="form-group">
+            <label>Prioridad</label>
+            <select id="prioridad">
+              <option value="Baja">Baja</option>
+              <option value="Media" selected>Media</option>
+              <option value="Alta">Alta</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Descripción del Problema</label>
+            <textarea id="descripcion" rows="4" style="width: 100%; padding: 10px" required></textarea>
+          </div>
+          <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px">
+            Crear Ticket
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div id="modal-edit-ticket" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" data-modal="modal-edit-ticket">&times;</span>
+        <h2>Gestionar Ticket</h2>
+        <form id="form-edit-ticket">
+          <input type="hidden" id="edit-ticket-id">
+          <div class="form-group">
+            <label>Estado</label>
+            <select id="edit-estado">
+              <option value="Abierto">Abierto</option>
+              <option value="En Reparación">En Reparación</option>
+              <option value="Cerrado">Cerrado</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Prioridad</label>
+            <select id="edit-prioridad">
+              <option value="Baja">Baja</option>
+              <option value="Media">Media</option>
+              <option value="Alta">Alta</option>
+            </select>
+          </div>
+          <div class="form-group" id="group-assign" style="display:none">
+            <label>Asignar a Técnico</label>
+            <select id="edit-asignado">
+                <option value="">-- Sin Asignar --</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px">
+            Guardar Cambios
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script src="assets/js/tickets.js"></script>
+    <script src="assets/js/sidebar.js"></script>
+  </body>
+</html>

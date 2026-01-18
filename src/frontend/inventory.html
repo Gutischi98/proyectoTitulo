@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inventario Local - Gestión</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <div id="overlay-backdrop" class="overlay-backdrop"></div>
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <h2>Inventario Local</h2>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="dashboard.html">Dashboard</a>
+          <a href="inventory.html" class="active">Inventario</a>
+          <a href="tickets.html">Tickets</a>
+          <a href="users.html">Usuarios</a>
+        </nav>
+        <div class="sidebar-footer">
+          <p>Bienvenido, <strong id="saludo-usuario">Técnico</strong></p>
+          <a href="#" id="logout-btn" class="logout">Cerrar Sesión</a>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="top-bar">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <button id="menu-toggle" class="menu-toggle">☰</button>
+            <h1>Gestión de Inventario</h1>
+          </div>
+          <button id="btn-add" class="btn-primary">+ Nuevo Equipo</button>
+        </header>
+
+        <section class="content-area">
+          <div class="table-container">
+            <table id="inventory-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre del Equipo</th>
+                  <th>Serie</th>
+                  <th>Categoría</th>
+                  <th>Ubicación</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody id="table-body"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div id="modal-equipo" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" data-modal="modal-equipo">&times;</span>
+        <h2>Registrar Nuevo Equipo</h2>
+        <form id="form-equipo">
+          <div class="form-group">
+            <label>Nombre del Equipo</label>
+            <input
+              type="text"
+              id="nombre"
+              placeholder="Ej. Notebook HP ProBook"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Número de Serie</label>
+            <input
+              type="text"
+              id="serie"
+              placeholder="Ej. 5CD234..."
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Categoría</label>
+            <select id="categoria" required>
+              <option value="1">Computadores</option>
+              <option value="2">Periféricos</option>
+              <option value="3">Redes</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Ubicación</label>
+            <select id="ubicacion" required>
+              <option value="1">Bodega Central</option>
+              <option value="2">Oficina IT</option>
+              <option value="3">Recepción</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Estado</label>
+            <select id="estado">
+              <option value="operativo">Operativo</option>
+              <option value="en_reparacion">En Reparación</option>
+              <option value="baja">De Baja</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-primary" style="width: 100%">
+            Guardar Equipo
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div id="modal-edit-equipo" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" data-modal="modal-edit-equipo">&times;</span>
+        <h2>Editar Equipo</h2>
+        <form id="form-edit-equipo">
+          <input type="hidden" id="edit-id">
+          <div class="form-group">
+            <label>Nombre del Equipo</label>
+            <input type="text" id="edit-nombre" required />
+          </div>
+          <div class="form-group">
+            <label>Número de Serie</label>
+            <input type="text" id="edit-serie" required />
+          </div>
+          <div class="form-group">
+            <label>Categoría</label>
+            <select id="edit-categoria" required>
+              <option value="1">Computadores</option>
+              <option value="2">Periféricos</option>
+              <option value="3">Redes</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Ubicación</label>
+            <select id="edit-ubicacion" required>
+              <option value="1">Bodega Central</option>
+              <option value="2">Oficina IT</option>
+              <option value="3">Recepción</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Estado</label>
+            <select id="edit-estado">
+              <option value="operativo">Operativo</option>
+              <option value="en_reparacion">En Reparación</option>
+              <option value="baja">De Baja</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-primary" style="width: 100%">
+            Actualizar Equipo
+          </button>
+        </form>
+      </div>
+    </div>
+
+
+    <div id="modal-auth-admin" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" data-modal="modal-auth-admin">&times;</span>
+        <h2>Autorización de Supervisor</h2>
+        <p>Se requieren credenciales de Administrador para eliminar este ítem.</p>
+        <form id="form-auth-admin">
+          <input type="hidden" id="delete-item-id" />
+          <div class="form-group">
+            <label>Email Administrador</label>
+            <input type="email" id="admin-email" required />
+          </div>
+          <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" id="admin-password" required />
+          </div>
+          <button type="submit" class="btn-primary" style="width: 100%">
+            Autorizar y Eliminar
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script src="assets/js/inventory.js"></script>
+    <script src="assets/js/sidebar.js"></script>
+  </body>
+</html>
