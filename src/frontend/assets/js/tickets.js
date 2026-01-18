@@ -36,16 +36,32 @@ function getAuthHeaders() {
 async function fetchTickets() {
     try {
         const res = await fetch(API_URL, { headers: getAuthHeaders() });
+        if (!res.ok) {
+            throw new Error(`Error ${res.status}: ${res.statusText}`);
+        }
         const tickets = await res.json();
+        console.log('Tickets recibidos:', tickets);
+
+        if (!Array.isArray(tickets)) {
+             console.error('La respuesta no es un array:', tickets);
+             return;
+        }
+
         const tbody = document.getElementById('tickets-body');
         tbody.innerHTML = '';
 
         const usuario = JSON.parse(localStorage.getItem('usuario'));
         const isAdmin = usuario.rol === 1;
 
+        if (tickets.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="8">No hay tickets para mostrar.</td></tr>';
+            return;
+        }
+
         tickets.forEach(ticket => {
             const fecha = new Date(ticket.fecha_creacion).toLocaleDateString();
             const asignado = ticket.nombre_asignado || 'Sin Asignar';
+            const reporta = ticket.nombre_reporta || 'Desconocido';
             
             let btnActions = `<button class="btn-sm edit-btn" onclick="openEdit(${ticket.id_ticket}, '${ticket.estado}', '${ticket.prioridad}', '${ticket.id_usuario_asignado}')">✏️</button>`;
             
@@ -57,7 +73,7 @@ async function fetchTickets() {
                 <tr>
                     <td data-label="ID">#${ticket.id_ticket}</td>
                     <td data-label="Asunto"><strong>${ticket.asunto}</strong></td>
-                    <td data-label="Reporta">${ticket.nombre_reporta}</td>
+                    <td data-label="Reporta">${reporta}</td>
                     <td data-label="Asignado">${asignado}</td>
                     <td data-label="Prioridad"><span class="badge" style="background:#eee; color:#333">${ticket.prioridad}</span></td>
                     <td data-label="Estado"><span class="badge ${ticket.estado === 'Abierto' ? 'baja' : 'operativo'}">${ticket.estado}</span></td>
@@ -68,7 +84,8 @@ async function fetchTickets() {
             tbody.innerHTML += row;
         });
     } catch (error) {
-        console.error(error);
+        console.error('Error cargando tickets:', error);
+        alert('Error cargando tickets: ' + error.message);
     }
 }
 
