@@ -37,7 +37,8 @@ async function fetchTickets() {
     try {
         const res = await fetch(API_URL, { headers: getAuthHeaders() });
         if (!res.ok) {
-            throw new Error(`Error ${res.status}: ${res.statusText}`);
+            const errorData = await res.json();
+            throw new Error(errorData.error || `Error ${res.status}: ${res.statusText}`);
         }
         const tickets = await res.json();
         console.log('Tickets recibidos:', tickets);
