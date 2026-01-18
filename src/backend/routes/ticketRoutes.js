@@ -7,25 +7,29 @@ router.use(verifyToken);
 
 router.get('/', async (req, res) => {
     try {
-        console.log('DEBUG: Iniciando consulta de tickets...');
-        if (!req.user) {
-             throw new Error('Req.user is undefined');
+        let sql = `
+            SELECT t.*, 
+                   u_reporta.nombre_completo AS nombre_reporta,
+                   u_asigna.nombre_completo AS nombre_asignado
+            FROM tickets t
+            LEFT JOIN usuarios u_reporta ON t.id_usuario_reporta = u_reporta.id_usuario
+            LEFT JOIN usuarios u_asigna ON t.id_usuario_asignado = u_asigna.id_usuario
+        `;
+        
+        const params = [];
+
+        // Relaxed check: != instead of !== to handle string vs number roles
+        if (req.user.rol != 1) {
+            sql += ' WHERE t.id_usuario_reporta = ? OR t.id_usuario_asignado = ?';
+            params.push(req.user.id, req.user.id);
         }
-        console.log('DEBUG: User:', req.user);
 
-        // Simplificado para debug: sin JOINs complejos por ahora, y sin filtros
-        // Recuperemos TODO para ver si el SQL básico funciona
-        let sql = `SELECT * FROM tickets ORDER BY fecha_creacion DESC`;
-        
-        console.log('DEBUG: SQL Simple:', sql);
+        sql += ' ORDER BY t.fecha_creacion DESC';
 
-        const [results] = await db.promise().query(sql);
-        console.log('DEBUG: Resultados obtenidos:', results.length);
-        
+        const [results] = await db.promise().query(sql, params);
         res.json(results);
     } catch (err) {
-        console.error('ERROR CRITICO EN TICKET ROUTES:', err);
-        res.status(500).json({ error: 'Fallo Backend: ' + err.message, stack: err.stack });
+        res.status(500).json({ error: err.message });
     }
 });
 

@@ -103,3 +103,10 @@ INSERT INTO tickets (asunto, prioridad, estado, id_usuario_reporta) VALUES
 ('Falla de Pantalla Notebook', 'Alta', 'Abierto', 1),
 ('Solicitud Mouse Ergonómico', 'Baja', 'En Proceso', 1),
 ('Error al conectar VPN', 'Media', 'Abierto', 1);
+
+
+-- FIX PARA EL ERROR DE COLUMNA FALTANTE
+ALTER TABLE tickets ADD COLUMN id_usuario_asignado INT NULL;
+
+-- FIX para el error de que no se muestren los tickets para mantener integridad referencial
+ALTER TABLE tickets ADD COLUMN id_usuario_asignado INT NULL;
