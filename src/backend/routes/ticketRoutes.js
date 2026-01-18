@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
                    u_reporta.nombre_completo AS nombre_reporta,
                    u_asigna.nombre_completo AS nombre_asignado
             FROM tickets t
-            JOIN usuarios u_reporta ON t.id_usuario_reporta = u_reporta.id_usuario
+            LEFT JOIN usuarios u_reporta ON t.id_usuario_reporta = u_reporta.id_usuario
             LEFT JOIN usuarios u_asigna ON t.id_usuario_asignado = u_asigna.id_usuario
         `;
         

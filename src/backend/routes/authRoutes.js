@@ -32,7 +32,11 @@ router.post('/login', (req, res) => {
         res.json({
             message: 'Bienvenido',
             token: token,
-            usuario: { nombre: usuario.nombre_completo, rol: usuario.id_rol }
+            usuario: { 
+                id_usuario: usuario.id_usuario,
+                nombre: usuario.nombre_completo, 
+                rol: usuario.id_rol 
+            }
         });
     });
 });
