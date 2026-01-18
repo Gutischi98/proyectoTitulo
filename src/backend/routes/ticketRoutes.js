@@ -18,12 +18,19 @@ router.get('/', async (req, res) => {
         
         const params = [];
 
-        if (req.user.rol !== 1) {
+        console.log('DEBUG: Usuario solicitando tickets:', req.user);
+
+        if (req.user.rol != 1) {
+            console.log('DEBUG: Rol no es 1 (Admin), aplicando filtro.');
             sql += ' WHERE t.id_usuario_reporta = ? OR t.id_usuario_asignado = ?';
             params.push(req.user.id, req.user.id);
+        } else {
+            console.log('DEBUG: Rol es 1 (Admin), mostrando todos los tickets.');
         }
 
         sql += ' ORDER BY t.fecha_creacion DESC';
+
+        console.log('DEBUG: Ejecutando SQL:', sql, 'Params:', params);
 
         const [results] = await db.promise().query(sql, params);
         res.json(results);
