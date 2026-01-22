@@ -1,10 +1,10 @@
 const API_URL = `${API_BASE_URL}/equipos`;
 
 document.addEventListener('DOMContentLoaded', () => {
+    setupLogout();
     fetchEquipos();
     configurarFiltros();
     setupModal();
-    setupLogout();
     updateUserGreeting();
 
     const usuario = JSON.parse(localStorage.getItem('usuario'));
@@ -40,29 +40,29 @@ function getAuthHeaders() {
     };
 }
 
-let allEquipos = [];
+let todosLosEquipos = [];
 
 async function fetchEquipos() {
     try {
         const response = await fetch(API_URL, { headers: getAuthHeaders() });
-        allEquipos = await response.json();
-        renderTable(allEquipos);
+        todosLosEquipos = await response.json();
+        mostrarTabla(todosLosEquipos);
     } catch (error) {
         console.error('Error:', error);
     }
 }
 
-function setupFilters() {
+function configurarFiltros() {
     const searchInput = document.getElementById('search-input');
     const filterCategoria = document.getElementById('filter-categoria');
     const filterEstado = document.getElementById('filter-estado');
 
-    function applyFilters() {
+    function aplicarFiltros() {
         const term = searchInput.value.toLowerCase();
         const cat = filterCategoria.value;
         const status = filterEstado.value;
 
-        const filtros = allEquipos.filter(e => {
+        const filtros = todosLosEquipos.filter(e => {
             const matchesTerm = e.nombre_equipo.toLowerCase().includes(term) || 
                                (e.numero_serie && e.numero_serie.toLowerCase().includes(term));
             const matchesCat = cat ? e.nombre_categoria === cat : true;
@@ -70,15 +70,15 @@ function setupFilters() {
             return matchesTerm && matchesCat && matchesStatus;
         });
 
-        renderTable(filtros);
+        mostrarTabla(filtros);
     }
 
-    searchInput.addEventListener('input', applyFilters);
-    filterCategoria.addEventListener('change', applyFilters);
-    filterEstado.addEventListener('change', applyFilters);
+    searchInput.addEventListener('input', aplicarFiltros);
+    filterCategoria.addEventListener('change', aplicarFiltros);
+    filterEstado.addEventListener('change', aplicarFiltros);
 }
 
-function renderTable(equipos) {
+function mostrarTabla(equipos) {
     const tbody = document.getElementById('table-body');
     const theadRow = document.querySelector('#inventory-table thead tr');
     tbody.innerHTML = ''; 

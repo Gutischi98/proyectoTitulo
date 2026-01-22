@@ -119,8 +119,6 @@ function configurarFiltros() {
     filterStatus.addEventListener('change', aplicarFiltros);
 }
 
-// Llamar a setupFilters en DOMContentLoaded
-
 
 const modalTicket = document.getElementById('modal-ticket');
 const modalEdit = document.getElementById('modal-edit-ticket');
