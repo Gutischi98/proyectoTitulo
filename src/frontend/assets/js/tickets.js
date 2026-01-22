@@ -2,6 +2,7 @@ const API_URL = `${API_BASE_URL}/tickets`;
 
 document.addEventListener('DOMContentLoaded', () => {
     fetchTickets();
+    configurarFiltros();
     setupModals();
     setupLogout();
     updateUserGreeting();
@@ -33,6 +34,8 @@ function getAuthHeaders() {
     };
 }
 
+let todosLosTickets = [];
+
 async function fetchTickets() {
     try {
         const res = await fetch(API_URL, { headers: getAuthHeaders() });
@@ -40,55 +43,84 @@ async function fetchTickets() {
             const errorData = await res.json();
             throw new Error(errorData.error || `Error ${res.status}: ${res.statusText}`);
         }
-        const tickets = await res.json();
-        console.log('Tickets recibidos:', tickets);
-
-        if (!Array.isArray(tickets)) {
-             console.error('La respuesta no es un array:', tickets);
-             return;
-        }
-
-        const tbody = document.getElementById('tickets-body');
-        tbody.innerHTML = '';
-
-        const usuario = JSON.parse(localStorage.getItem('usuario'));
-        const isAdmin = usuario.rol === 1;
-
-        if (tickets.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="8">No hay tickets para mostrar.</td></tr>';
-            return;
-        }
-
-        tickets.forEach(ticket => {
-            const fecha = new Date(ticket.fecha_creacion).toLocaleDateString();
-            const asignado = ticket.nombre_asignado || 'Sin Asignar';
-            const reporta = ticket.nombre_reporta || 'Desconocido';
-            
-            let btnActions = `<button class="btn-sm edit-btn" onclick="openEdit(${ticket.id_ticket}, '${ticket.estado}', '${ticket.prioridad}', '${ticket.id_usuario_asignado}')">✏️</button>`;
-            
-            if (isAdmin) {
-                btnActions += `<button class="btn-sm delete-btn" onclick="deleteTicket(${ticket.id_ticket})">🗑️</button>`;
-            }
-
-            const row = `
-                <tr>
-                    <td data-label="ID">#${ticket.id_ticket}</td>
-                    <td data-label="Asunto"><strong>${ticket.asunto}</strong></td>
-                    <td data-label="Reporta">${reporta}</td>
-                    <td data-label="Asignado">${asignado}</td>
-                    <td data-label="Prioridad"><span class="badge" style="background:#eee; color:#333">${ticket.prioridad}</span></td>
-                    <td data-label="Estado"><span class="badge ${ticket.estado === 'Abierto' ? 'baja' : 'operativo'}">${ticket.estado}</span></td>
-                    <td data-label="Fecha">${fecha}</td>
-                    <td>${btnActions}</td>
-                </tr>
-            `;
-            tbody.innerHTML += row;
-        });
+        todosLosTickets = await res.json();
+        console.log('Tickets recibidos:', todosLosTickets);
+        mostrarTickets(todosLosTickets);
     } catch (error) {
         console.error('Error cargando tickets:', error);
         alert('Error cargando tickets: ' + error.message);
     }
 }
+
+function mostrarTickets(tickets) {
+    const tbody = document.getElementById('tickets-body');
+    tbody.innerHTML = '';
+
+    const usuario = JSON.parse(localStorage.getItem('usuario'));
+    const isAdmin = usuario.rol === 1;
+
+    if (tickets.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8">No hay tickets para mostrar.</td></tr>';
+        return;
+    }
+
+    tickets.forEach(ticket => {
+        const fecha = new Date(ticket.fecha_creacion).toLocaleDateString();
+        const asignado = ticket.nombre_asignado || 'Sin Asignar';
+        const reporta = ticket.nombre_reporta || 'Desconocido';
+        
+        let btnActions = `<button class="btn-sm edit-btn" onclick="openEdit(${ticket.id_ticket}, '${ticket.estado}', '${ticket.prioridad}', '${ticket.id_usuario_asignado}')">✏️</button>`;
+        
+        if (isAdmin) {
+            btnActions += `<button class="btn-sm delete-btn" onclick="deleteTicket(${ticket.id_ticket})">🗑️</button>`;
+        }
+
+        const badgeClass = ticket.estado === 'Abierto' ? 'baja' : (ticket.estado === 'En Proceso' ? 'en_reparacion' : 'operativo');
+
+        const row = `
+            <tr>
+                <td data-label="ID">#${ticket.id_ticket}</td>
+                <td data-label="Asunto"><strong>${ticket.asunto}</strong></td>
+                <td data-label="Reporta">${reporta}</td>
+                <td data-label="Asignado">${asignado}</td>
+                <td data-label="Prioridad"><span class="badge" style="background:#eee; color:#333">${ticket.prioridad}</span></td>
+                <td data-label="Estado"><span class="badge ${badgeClass}">${ticket.estado}</span></td>
+                <td data-label="Fecha">${fecha}</td>
+                <td>${btnActions}</td>
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    });
+}
+
+function configurarFiltros() {
+    const searchInput = document.getElementById('search-input');
+    const filterStatus = document.getElementById('filter-status');
+
+    function aplicarFiltros() {
+        const termino = searchInput.value.toLowerCase();
+        const estado = filterStatus.value;
+
+        const filtrados = todosLosTickets.filter(t => {
+            const coincideTermino = 
+                t.asunto.toLowerCase().includes(termino) || 
+                (t.nombre_reporta && t.nombre_reporta.toLowerCase().includes(termino)) ||
+                (t.nombre_asignado && t.nombre_asignado.toLowerCase().includes(termino));
+            
+            const coincideEstado = estado ? t.estado === estado : true;
+
+            return coincideTermino && coincideEstado;
+        });
+
+        mostrarTickets(filtrados);
+    }
+
+    searchInput.addEventListener('input', aplicarFiltros);
+    filterStatus.addEventListener('change', aplicarFiltros);
+}
+
+// Llamar a setupFilters en DOMContentLoaded
+
 
 const modalTicket = document.getElementById('modal-ticket');
 const modalEdit = document.getElementById('modal-edit-ticket');

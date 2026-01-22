@@ -31,7 +31,23 @@
             <button id="menu-toggle" class="menu-toggle">☰</button>
             <h1>Gestión de Inventario</h1>
           </div>
-          <button id="btn-add" class="btn-primary">+ Nuevo Equipo</button>
+          <div class="actions-bar" style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; margin-left: auto;">
+             <input type="text" id="search-input" placeholder="Buscar equipo, serie..." style="padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+             <select id="filter-categoria" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+               <option value="">Todas las Categorías</option>
+               <option value="Computadores">Computadores</option>
+               <option value="Periféricos">Periféricos</option>
+               <option value="Redes">Redes</option>
+               <option value="Impresión">Impresión</option>
+             </select>
+             <select id="filter-estado" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+               <option value="">Todos los Estados</option>
+               <option value="operativo">Operativo</option>
+               <option value="en_reparacion">En Reparación</option>
+               <option value="baja">Baja</option>
+             </select>
+             <button id="btn-add" class="btn-primary" style="white-space: nowrap;">+ Agregar</button>
+           </div>
         </header>
 
         <section class="content-area">
@@ -135,6 +151,8 @@
               <option value="1">Bodega Central</option>
               <option value="2">Oficina IT</option>
               <option value="3">Recepción</option>
+              <option value="4">Sala de Servidores</option>
+              <option value="5">Gerencia</option>
             </select>
           </div>
           <div class="form-group">

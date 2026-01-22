@@ -29,9 +29,18 @@
             <button id="menu-toggle" class="menu-toggle">☰</button>
             <h1>Mesa de Ayuda</h1>
            </div>
-          <button id="btn-new-ticket" class="btn-primary">
-            + Nuevo Ticket
-          </button>
+      <div class="actions-bar" style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+            <input type="text" id="search-input" placeholder="Buscar por asunto, usuario..." style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; flex-grow: 1;">
+            <select id="filter-status" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+              <option value="">Todos los Estados</option>
+              <option value="Abierto">Abierto</option>
+              <option value="En Proceso">En Proceso</option>
+              <option value="Cerrado">Cerrado</option>
+            </select>
+            <button id="btn-new-ticket" class="btn-primary" style="white-space: nowrap;">
+              + Nuevo Ticket
+            </button>
+          </div>
         </header>
 
         <section class="content-area">
@@ -94,7 +103,7 @@
             <label>Estado</label>
             <select id="edit-estado">
               <option value="Abierto">Abierto</option>
-              <option value="En Reparación">En Reparación</option>
+              <option value="En Proceso">En Proceso</option>
               <option value="Cerrado">Cerrado</option>
             </select>
           </div>

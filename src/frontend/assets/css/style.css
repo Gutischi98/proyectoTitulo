@@ -10,6 +10,13 @@ body {
   height: 100vh;
   overflow: hidden;
 }
+
+@media (max-width: 768px) {
+  body {
+    height: auto;
+    overflow: auto; /* Fix: error de scroll en dispositivos móviles */
+  }
+}
 .app-container {
   display: flex;
   height: 100vh;

@@ -3,6 +3,7 @@ const USERS_API = `${API_BASE_URL}/users`;
 document.addEventListener('DOMContentLoaded', () => {
     checkAdmin();
     fetchUsers();
+    configurarFiltros();
     setupModals();
     setupLogout();
     updateUserGreeting();
@@ -55,6 +56,8 @@ function getAuthHeaders() {
     };
 }
 
+let todosLosUsuarios = [];
+
 async function fetchUsers() {
     const usuario = JSON.parse(localStorage.getItem('usuario'));
     
@@ -64,29 +67,53 @@ async function fetchUsers() {
         const res = await fetch(USERS_API, { headers: getAuthHeaders() });
         if (!res.ok) throw new Error('Error de permisos');
         
-        const users = await res.json();
-        const tbody = document.getElementById('users-body');
-        let html = '';
-
-        users.forEach(u => {
-            html += `
-                <tr>
-                    <td data-label="ID">#${u.id_usuario}</td>
-                    <td data-label="Nombre"><strong>${u.nombre_completo}</strong></td>
-                    <td data-label="Email">${u.email}</td>
-                    <td data-label="Rol"><span class="badge ${u.nombre_rol === 'admin' ? 'baja' : 'operativo'}">${u.nombre_rol}</span></td>
-                    <td>
-                        <button class="btn-sm edit-btn" onclick="openEdit(${u.id_usuario}, '${u.nombre_completo}', '${u.email}', '${u.nombre_rol}')">✏️</button>
-                        <button class="btn-sm key-btn" onclick="openPassword(${u.id_usuario}, '${u.nombre_completo}')">🔑</button>
-                        <button class="btn-sm delete-btn" onclick="deleteUser(${u.id_usuario})">🗑️</button>
-                    </td>
-                </tr>
-            `;
-        });
-        tbody.innerHTML = html;
+        todosLosUsuarios = await res.json();
+        mostrarUsuarios(todosLosUsuarios);
     } catch (error) {
         console.error(error);
     }
+}
+
+function mostrarUsuarios(users) {
+    const tbody = document.getElementById('users-body');
+    let html = '';
+
+    if (users.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5">No se encontraron usuarios.</td></tr>';
+        return;
+    }
+
+    users.forEach(u => {
+        html += `
+            <tr>
+                <td data-label="ID">#${u.id_usuario}</td>
+                <td data-label="Nombre"><strong>${u.nombre_completo}</strong></td>
+                <td data-label="Email">${u.email}</td>
+                <td data-label="Rol"><span class="badge ${u.nombre_rol === 'admin' ? 'baja' : 'operativo'}">${u.nombre_rol}</span></td>
+                <td>
+                    <button class="btn-sm edit-btn" onclick="openEdit(${u.id_usuario}, '${u.nombre_completo}', '${u.email}', '${u.nombre_rol}')">✏️</button>
+                    <button class="btn-sm key-btn" onclick="openPassword(${u.id_usuario}, '${u.nombre_completo}')">🔑</button>
+                    <button class="btn-sm delete-btn" onclick="deleteUser(${u.id_usuario})">🗑️</button>
+                </td>
+            </tr>
+        `;
+    });
+    tbody.innerHTML = html;
+}
+
+function configurarFiltros() {
+    const searchInput = document.getElementById('search-input');
+    
+    searchInput.addEventListener('input', () => {
+        const termino = searchInput.value.toLowerCase();
+        
+        const usuariosFiltrados = todosLosUsuarios.filter(u => 
+            u.nombre_completo.toLowerCase().includes(termino) ||
+            u.email.toLowerCase().includes(termino)
+        );
+        
+        mostrarUsuarios(usuariosFiltrados);
+    });
 }
 
 const modalUser = document.getElementById('modal-user');

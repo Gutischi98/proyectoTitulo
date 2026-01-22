@@ -2,6 +2,7 @@ const API_URL = `${API_BASE_URL}/equipos`;
 
 document.addEventListener('DOMContentLoaded', () => {
     fetchEquipos();
+    configurarFiltros();
     setupModal();
     setupLogout();
     updateUserGreeting();
@@ -39,14 +40,42 @@ function getAuthHeaders() {
     };
 }
 
+let allEquipos = [];
+
 async function fetchEquipos() {
     try {
         const response = await fetch(API_URL, { headers: getAuthHeaders() });
-        const equipos = await response.json();
-        renderTable(equipos);
+        allEquipos = await response.json();
+        renderTable(allEquipos);
     } catch (error) {
         console.error('Error:', error);
     }
+}
+
+function setupFilters() {
+    const searchInput = document.getElementById('search-input');
+    const filterCategoria = document.getElementById('filter-categoria');
+    const filterEstado = document.getElementById('filter-estado');
+
+    function applyFilters() {
+        const term = searchInput.value.toLowerCase();
+        const cat = filterCategoria.value;
+        const status = filterEstado.value;
+
+        const filtros = allEquipos.filter(e => {
+            const matchesTerm = e.nombre_equipo.toLowerCase().includes(term) || 
+                               (e.numero_serie && e.numero_serie.toLowerCase().includes(term));
+            const matchesCat = cat ? e.nombre_categoria === cat : true;
+            const matchesStatus = status ? e.estado === status : true;
+            return matchesTerm && matchesCat && matchesStatus;
+        });
+
+        renderTable(filtros);
+    }
+
+    searchInput.addEventListener('input', applyFilters);
+    filterCategoria.addEventListener('change', applyFilters);
+    filterEstado.addEventListener('change', applyFilters);
 }
 
 function renderTable(equipos) {
